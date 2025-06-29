@@ -12,10 +12,10 @@ runCLI({
     command: "server",
     blueprint,
     mount: [
-    {
-        hostPath: resolve("./database/"),
-        vfsPath: `/wordpress/wp-content/database/`,
-    },
+        {
+            hostPath: resolve("./database/"),
+            vfsPath: `/wordpress/wp-content/database/`,
+        },
     ],
 })
 .then(() => {
