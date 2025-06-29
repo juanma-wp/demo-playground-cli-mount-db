@@ -1,0 +1,15 @@
+{
+  "name": "demo-playground-cli-mount-db",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@wp-playground/cli": "1.1.2"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
