@@ -1,6 +1,6 @@
-import { runCLI } from "@wp-playground/cli";
-import { readFileSync } from "fs";
-import { resolve } from "path";
+const { runCLI } = require("@wp-playground/cli");
+const { readFileSync } = require("fs");
+const { resolve } = require("path");
 
 try {
 const blueprint = JSON.parse(
@@ -8,7 +8,7 @@ const blueprint = JSON.parse(
 );
 console.log("Loaded blueprint:", JSON.stringify(blueprint, null, 2));
 
-await runCLI({
+runCLI({
     command: "server",
     blueprint,
     mount: [
@@ -17,6 +17,13 @@ await runCLI({
         vfsPath: `/wordpress/wp-content/database/`,
     },
     ],
+})
+.then(() => {
+    // Server started successfully
+})
+.catch((error) => {
+    console.error("Error starting WP Playground server:", error);
+    throw error;
 });
 
 } catch (error) {
