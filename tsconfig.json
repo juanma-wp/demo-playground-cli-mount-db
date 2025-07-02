@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "./dist",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "resolveJsonModule": true,
+    "jsx": "react",
+    "target": "ES2021",
+    "module": "esnext",
+    "lib": ["ES2022", "esnext.disposable", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "baseUrl": ".",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+} 

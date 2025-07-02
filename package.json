@@ -3,13 +3,21 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "build": "tsc && tsc-esm-fix dist",
+    "start": "npm run build && node dist/index.js"
   },
   "dependencies": {
-    "@wp-playground/cli": "1.1.2"
+    "@wp-playground/cli": "1.1.5"
   },
+  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.0.0",
+    "tsc-esm-fix": "^3.1.2",
+    "typescript": "^5.0.0"
+  }
 }
