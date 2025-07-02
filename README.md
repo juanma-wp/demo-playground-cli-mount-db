@@ -8,14 +8,17 @@ This project demonstrates how to boot a WordPress Playground instance in Node.js
 
 - Boots WordPress Playground in a Node.js environment.
 - No HTTP server required—interact directly with the Playground API.
+- **Dynamically fetches the latest WordPress release and SQLite Integration plugin.**
 - Supports mounting local directories (e.g., for database or plugin development).
-- Example of making direct PHP/HTTP requests to the Playground.
+- Example of making direct PHP/HTTP requests to the Playground, including REST API endpoints.
+- Blueprint-driven setup: install plugins, define constants, run setup steps, and write files.
+- Utility functions for file fetching and following HTTP redirects.
 
 ---
 
 ## Prerequisites
 
-- Node.js v18+ (required for `worker_threads` and ES modules)
+- Node.js v22+ 
 - npm
 
 ---
@@ -41,8 +44,37 @@ This project demonstrates how to boot a WordPress Playground instance in Node.js
 
 ### 1. Prepare your blueprint
 
-Edit `blueprint.json` to define your desired WordPress setup, plugins, and configuration.  
+Edit `blueprint.json` to define your desired WordPress setup, plugins, constants, and configuration.  
 You can also customize the `database/` directory to mount your own files into the Playground.
+
+Example `blueprint.json`:
+
+```json
+{
+  "steps": [
+    { "step": "runWpInstallationWizard", "options": {} },
+    {
+      "step": "installPlugin",
+      "pluginData": {
+        "resource": "wordpress.org/plugins",
+        "slug": "jwt-authentication-for-wp-rest-api"
+      }
+    },
+    {
+      "step": "defineWpConfigConsts",
+      "consts": {
+        "JWT_AUTH_SECRET_KEY": "your-top-secret-key",
+        "JWT_AUTH_CORS_ENABLE": true
+      }
+    },
+    {
+      "step": "writeFile",
+      "path": "/wordpress/wp-content/mu-plugins/rewrite.php",
+      "data": "<?php add_action( 'after_setup_theme', function() { global $wp_rewrite; $wp_rewrite->set_permalink_structure('/%postname%/'); $wp_rewrite->flush_rules(); } );"
+    }
+  ]
+}
+```
 
 ### 2. Build and run
 
@@ -54,49 +86,52 @@ npm start
 
 This will:
 - Compile the TypeScript files to `dist/`
-- Boot the Playground using your `blueprint.json`
+- Dynamically fetch the latest WordPress release and the SQLite Integration plugin
+- Boot the Playground
 - Mount the `database/` directory into `/wordpress/wp-content/database/` inside the Playground
-- Make a sample request to `/wp-admin/` and print the response
-
----
-
-## How it works
-
-- The main entry point is `index.ts`.
-- It loads your `blueprint.json`, boots the Playground using `bootPlaygroundNode`, and mounts the `database/` directory.
-- You can modify `index.ts` to make additional requests or customize the boot process.
+- Run all blueprint steps (install plugins, define constants, write files, etc.)
+- Make a sample request to `/wp-json/wp/v2/posts` and print the response
 
 ---
 
 ## Example: Making a Request
 
-After booting, you can make requests like this:
+After booting, you can make requests like this (see `src/index.ts`):
 
 ```ts
 const req = {
-  method: 'GET',
-  url: '/wp-admin/',
-  headers: {},
-  body: null,
+  method: "GET",
+  url: "/wp-json/wp/v2/posts",
+  headers: {}
 };
-const res = await playground['handleRequest'](req);
-console.log('Response:', res.status, res.body);
+const res = await requestHandler.request(req);
+console.log("Response:", res.text, res.httpStatusCode, res.headers);
+```
+
+Or, to follow redirects automatically:
+
+```ts
+import { requestFollowRedirects } from "./utils";
+const res = await requestFollowRedirects(requestHandler, req);
 ```
 
 ---
 
 ## Customization
 
-- **Mounts:** Edit the `mount` array in `index.ts` to mount other directories.
-- **Blueprint:** Change `blueprint.json` to install plugins, set constants, or run setup steps.
+- **WordPress Version:** Change the version in `resolveWordPressRelease("6.8")` in `index.ts`.
+- **Plugins:** Add plugin install steps in `blueprint.json`.
+- **Constants:** Define WP config constants in `blueprint.json`.
+- **Mounts:** Edit the mount logic in `index.ts` to mount other directories.
+- **Blueprint:** Use blueprint steps to install plugins, define constants, or run setup steps.
 - **Multiple Workers:** For advanced use, you can extend the logic to support multiple PHP workers.
 
 ---
 
 ## References
-
-- See `docs/boot-node-playground-without-express-server.md` for a detailed technical explanation and code samples.
-- [WordPress Playground documentation](https://github.com/WordPress/wordpress-playground)
+- [`wordpress-playground/packages/playground/cli/src/run-cli.ts`](https://github.com/WordPress/wordpress-playground/blob/70d54903540a136c160a112393b35018356c86da/packages/playground/cli/src/run-cli.ts#L562-L596) 
+- [WordPress Playground repo](https://github.com/WordPress/wordpress-playground)
+- [WordPress Playground documentation](https://wordpress.github.io/wordpress-playground/)
 
 ---
 
