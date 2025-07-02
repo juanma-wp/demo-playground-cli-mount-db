@@ -4,16 +4,13 @@ import {
   resolveWordPressRelease
 } from "@wp-playground/wordpress";
 import { rootCertificates } from "tls";
-import {
-  fetchSqliteIntegration,
-  cachedDownload,
-} from "./download";
 // import { type Mount, mountResources } from "./mount";
 import { readFileSync } from "fs";
 import { resolve } from "path";
 import { PHPRequest, PHPRequestHandler } from "@php-wasm/universal";
 import { compileBlueprint, runBlueprintSteps } from "@wp-playground/blueprints";
-import {requestFollowRedirects} from "./utils";
+import {requestFollowRedirects, fetchFileAsFileObject} from "./utils";
+
 
 (async () => {
   // Load blueprint.json
@@ -22,9 +19,14 @@ import {requestFollowRedirects} from "./utils";
   );
 
   const wpDetails = await resolveWordPressRelease("6.8");
-  const wordPressZip = await cachedDownload(
+  const wordPressZip = await fetchFileAsFileObject(
     wpDetails.releaseUrl,
     `${wpDetails.version}.zip`
+  );
+  
+  const sqliteIntegrationPluginZip = await fetchFileAsFileObject(
+    "https://github.com/WordPress/sqlite-database-integration/archive/refs/heads/develop.zip",
+    "sqlite.zip"
   );
   
   const requestHandler = await bootWordPress({
@@ -32,7 +34,7 @@ import {requestFollowRedirects} from "./utils";
     createPhpRuntime: async () =>
       await loadNodeRuntime("8.3"),
     wordPressZip,
-    sqliteIntegrationPluginZip: fetchSqliteIntegration(),
+    sqliteIntegrationPluginZip,
     sapiName: "cli",
     createFiles: {
       "/internal/shared/ca-bundle.crt": rootCertificates.join("\n"),
