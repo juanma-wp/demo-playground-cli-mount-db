@@ -45,7 +45,10 @@ export async function createPlaygroundRequestHandler(blueprint: Blueprint) {
   const php = await requestHandler.getPrimaryPhp();
   php.mkdir("/wordpress/wp-content/database/");   
   php.mount("/wordpress/wp-content/database/", createNodeFsMountHandler("./database/"));
-
+  php.mount(
+      "/wordpress/wp-content/mu-plugins/extended-user-info-rest.php",
+      createNodeFsMountHandler("./wordpress/plugins/extended-user-info-rest.php")
+    );
   const compiledBlueprint = await compileBlueprint(blueprint);
   await runBlueprintSteps(compiledBlueprint, php);
 
