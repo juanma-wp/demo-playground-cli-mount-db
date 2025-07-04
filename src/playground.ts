@@ -6,7 +6,6 @@ import {
 import { rootCertificates } from "tls";
 // import { type Mount, mountResources } from "./mount";
 
-import { PHPRequest, PHPRequestHandler } from "@php-wasm/universal";
 import { compileBlueprint, runBlueprintSteps } from "@wp-playground/blueprints";
 import {requestFollowRedirects, fetchFileAsFileObject} from "./utils.js";
 import { Blueprint } from "@wp-playground/blueprints";
@@ -53,15 +52,3 @@ export async function createPlaygroundRequestHandler(blueprint: Blueprint) {
 
   return requestHandler;
 }
-
-// (async () => {
-//   // Make a sample request to /wp-json/
-//   const req = {
-//     method: "GET",
-//     url: "/wp-json/wp/v2/posts",
-//     headers: {}
-//   } as PHPRequest;
-//   const res = await requestHandler.request(req);
-//   // const res = await requestFollowRedirects(requestHandler, req);
-//   console.log("Response:", res.text, res.httpStatusCode, res.headers);
-// })();
