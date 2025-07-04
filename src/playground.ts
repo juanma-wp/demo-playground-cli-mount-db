@@ -8,7 +8,7 @@ import { rootCertificates } from "tls";
 
 import { PHPRequest, PHPRequestHandler } from "@php-wasm/universal";
 import { compileBlueprint, runBlueprintSteps } from "@wp-playground/blueprints";
-import {requestFollowRedirects, fetchFileAsFileObject} from "./utils";
+import {requestFollowRedirects, fetchFileAsFileObject} from "./utils.js";
 import { Blueprint } from "@wp-playground/blueprints";
 
 // Move all logic into a function and export it

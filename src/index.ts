@@ -1,6 +1,6 @@
-import { createPlaygroundRequestHandler } from "./playground";
+import { createPlaygroundRequestHandler } from "./playground.js";
 import { PHPRequest } from "@php-wasm/universal";
-import { requestFollowRedirects } from "./utils";
+import { requestFollowRedirects } from "./utils.js";
 import { readFileSync } from "fs";
 import { resolve } from "path";
 
