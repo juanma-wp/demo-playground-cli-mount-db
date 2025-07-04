@@ -4,10 +4,9 @@ import {
   resolveWordPressRelease
 } from "@wp-playground/wordpress";
 import { rootCertificates } from "tls";
-// import { type Mount, mountResources } from "./mount";
 
 import { compileBlueprint, runBlueprintSteps } from "@wp-playground/blueprints";
-import {requestFollowRedirects, fetchFileAsFileObject} from "./utils.js";
+import {fetchFileAsFileObject} from "./utils.js";
 import { Blueprint } from "@wp-playground/blueprints";
 
 // Move all logic into a function and export it
