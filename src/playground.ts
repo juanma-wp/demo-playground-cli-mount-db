@@ -46,16 +46,16 @@ export async function createPlaygroundRequestHandler(blueprint: Blueprint) {
   php.mkdir("/wordpress/wp-content/database/");   
   php.mount("/wordpress/wp-content/database/", createNodeFsMountHandler("./database/"));
 
-  /* @begin mu-plugins issue work in progress */
+  const compiledBlueprint = await compileBlueprint(blueprint);  
+  await runBlueprintSteps(compiledBlueprint, php);
+
   php.mkdir("/wordpress/wp-content/mu-plugins/");
+  console.log("/wordpress/wp-content/mu-plugins/ folder created");
   php.mount(
       "/wordpress/wp-content/mu-plugins/extended-user-info-rest.php",
       createNodeFsMountHandler("./wordpress/plugins/extended-user-info-rest.php")
     );
-  /* @end mu-plugins issue work in progress */
-  
-  const compiledBlueprint = await compileBlueprint(blueprint);
-  await runBlueprintSteps(compiledBlueprint, php);
+  console.log("/wordpress/wp-content/mu-plugins/extended-user-info-rest.php mounted");
 
   return requestHandler;
 }
