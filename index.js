@@ -1,32 +1,23 @@
-const { runCLI } = require("@wp-playground/cli");
-const { readFileSync } = require("fs");
-const { resolve } = require("path");
+import { handlerPromise } from "./playgroundHandler.js";
+import { authenticateUser, getUserInfo } from "./utils.js";
 
+const requestHandler = await handlerPromise;
+console.log("Request handler ready");
+
+// Main execution with simplified error handling
 try {
-const blueprint = JSON.parse(
-    readFileSync(resolve("./blueprint.json"), "utf8")
-);
-console.log("Loaded blueprint:", JSON.stringify(blueprint, null, 2));
+  // Test basic connectivity
+  const homeResponse = await requestHandler.request({
+    method: "GET",
+    url: "/",
+    headers: {},
+  });
+  console.log("Home page status:", homeResponse.httpStatusCode);
 
-runCLI({
-    command: "server",
-    blueprint,
-    mount: [
-        {
-            hostPath: resolve("./database/"),
-            vfsPath: `/wordpress/wp-content/database/`,
-        },
-    ],
-})
-.then(() => {
-    // Server started successfully
-})
-.catch((error) => {
-    console.error("Error starting WP Playground server:", error);
-    throw error;
-});
-
+  // Authenticate and get user info
+  const token = await authenticateUser(requestHandler, "admin", "password");
+  const userData = await getUserInfo(requestHandler, token);
+  
 } catch (error) {
-console.error("Error starting WP Playground server:", error);
-throw error;
+  console.log("❌", error.message);
 }

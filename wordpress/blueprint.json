@@ -1,0 +1,29 @@
+{
+  "features": {
+    "networking": true
+  },
+  "login": true,
+  "steps": [
+    {
+      "step": "runWpInstallationWizard",
+      "options": {}
+    },
+    {
+      "step": "installPlugin",
+      "pluginData": {
+        "resource": "wordpress.org/plugins",
+        "slug": "jwt-authentication-for-wp-rest-api"
+      }
+    },
+    {
+      "step": "defineWpConfigConsts",
+      "consts": {
+        "WP_HOME": "http://localhost:3000/wp",
+        "JWT_AUTH_SECRET_KEY": "",
+        "WP_MEMORY_LIMIT": "64M",
+        "WP_MAX_MEMORY_LIMIT": "128M",
+        "DISABLE_WP_CRON": true
+      }
+    }
+  ]
+}
