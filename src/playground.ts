@@ -44,18 +44,22 @@ export async function createPlaygroundRequestHandler(blueprint: Blueprint) {
 
   const php = await requestHandler.getPrimaryPhp();
   php.mkdir("/wordpress/wp-content/database/");   
-  php.mount("/wordpress/wp-content/database/", createNodeFsMountHandler("./database/"));
+  php.mount(
+    "/wordpress/wp-content/database/",
+    createNodeFsMountHandler("./wordpress/database/")
+  );
 
+  php.mkdir("/wordpress/wp-content/mu-plugins/");
+  php.mount(
+    "/wordpress/wp-content/mu-plugins/",
+    createNodeFsMountHandler("./wordpress/mu-plugins/")
+  );
+  
   const compiledBlueprint = await compileBlueprint(blueprint);  
   await runBlueprintSteps(compiledBlueprint, php);
 
-  php.mkdir("/wordpress/wp-content/mu-plugins/");
-  console.log("/wordpress/wp-content/mu-plugins/ folder created");
-  php.mount(
-      "/wordpress/wp-content/mu-plugins/extended-user-info-rest.php",
-      createNodeFsMountHandler("./wordpress/plugins/extended-user-info-rest.php")
-    );
-  console.log("/wordpress/wp-content/mu-plugins/extended-user-info-rest.php mounted");
+  console.log(php.listFiles("/wordpress/wp-content/mu-plugins/"));
+  console.log(php.readFileAsText("/wordpress/wp-content/mu-plugins/extended-user-info-rest.php"));
 
   return requestHandler;
 }

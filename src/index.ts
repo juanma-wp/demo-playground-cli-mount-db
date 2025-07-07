@@ -46,7 +46,9 @@ import { resolve } from "path";
   const resGetUserInfo = await requestHandler.request(
     reqGetUserInfo as PHPRequest
   );
-  const { id, name, url, description, link, slug, avatar_urls, meta, _links } = JSON.parse(resGetUserInfo.text);
+  const userInfo = JSON.parse(resGetUserInfo.text);
+  const { id, name, url, description, link, slug, avatar_urls, meta, _links } = userInfo;
+  console.log("User info:", userInfo);
   console.log("Response:", resGetUserInfo.httpStatusCode, resGetUserInfo.headers);
   console.log({ id, name, url, description, link, slug, avatar_urls, meta, _links });
 })(); 
