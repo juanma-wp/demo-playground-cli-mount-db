@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "./dist",
+    "declaration": false,
+    "moduleResolution": "node",
+    "module": "esnext",
+    "target": "ES2021",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "typeRoots": ["../node_modules/@types", "./node_modules/@types"]
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["dist"]
+}

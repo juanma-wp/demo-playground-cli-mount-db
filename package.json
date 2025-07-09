@@ -1,25 +1,52 @@
 {
-  "name": "demo-playground-cli-mount-db",
+  "name": "wordpress-playground-handler",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc",
-    "start": "rm -rf dist && npm run build && node dist/index.js"
+    "start": "rm -rf dist && npm run build && node dist/index.js",
+    "example": "cd example && npm start",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "prepublishOnly": "npm run build && npm run test:run"
   },
   "dependencies": {
     "@wp-playground/cli": "1.1.5",
     "fs-extra": "^11.3.0"
   },
   "type": "module",
-  "keywords": [],
+  "keywords": [
+    "wordpress",
+    "playground",
+    "php",
+    "wasm",
+    "request-handler",
+    "blueprint",
+    "development",
+    "testing"
+  ],
   "author": "",
-  "license": "ISC",
-  "description": "",
+  "license": "MIT",
+  "description": "A Node.js library for creating and managing WordPress Playground instances with PHP request handling capabilities",
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.0.0",
+    "@vitest/ui": "^3.2.4",
     "ts-node": "^10.0.0",
     "tsc-esm-fix": "^3.1.2",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "vitest": "^3.2.4"
   }
 }

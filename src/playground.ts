@@ -3,6 +3,7 @@ import {
   bootWordPress,
   resolveWordPressRelease
 } from "@wp-playground/wordpress";
+import { PHPRequestHandler } from "@php-wasm/universal";
 import { rootCertificates } from "tls";
 
 import { compileBlueprint, runBlueprintSteps } from "@wp-playground/blueprints";
@@ -10,7 +11,7 @@ import {fetchFileAsFileObject} from "./utils.js";
 import { Blueprint } from "@wp-playground/blueprints";
 
 // Move all logic into a function and export it
-export async function createPlaygroundRequestHandler(blueprint: Blueprint) {
+export async function createPlaygroundRequestHandler(blueprint: Blueprint): Promise<PHPRequestHandler> {
   
 
   const wpDetails = await resolveWordPressRelease("6.8");
@@ -57,9 +58,6 @@ export async function createPlaygroundRequestHandler(blueprint: Blueprint) {
   
   const compiledBlueprint = await compileBlueprint(blueprint);  
   await runBlueprintSteps(compiledBlueprint, php);
-
-  console.log(php.listFiles("/wordpress/wp-content/mu-plugins/"));
-  console.log(php.readFileAsText("/wordpress/wp-content/mu-plugins/extended-user-info-rest.php"));
 
   return requestHandler;
 }

@@ -1,13 +1,14 @@
-import { PHPRequest, PHPRequestHandler } from "@php-wasm/universal";
+import { PHPRequest, PHPRequestHandler, PHPResponse } from "@php-wasm/universal";
 
 // Sends a PHP request using the provided handler and follows HTTP 301/302 redirects recursively until a non-redirect response is received.
 export const requestFollowRedirects = async (
   handler: PHPRequestHandler,
   request: PHPRequest
-) => {
+): Promise<PHPResponse> => {
   let response = await handler.request(request);
   while (
     [301, 302].includes(response.httpStatusCode) &&
+    response.headers["location"] &&
     response.headers["location"].length === 1
   ) {
     response = await requestFollowRedirects(handler, {

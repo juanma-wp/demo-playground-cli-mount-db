@@ -1,0 +1,17 @@
+{
+  "name": "playground-example",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && node dist/example.js",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "demo-playground-cli-mount-db": "file:.."
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

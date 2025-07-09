@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
-    "rootDir": "src",
     "outDir": "./dist",
     "sourceMap": true,
-    "declaration": false,
+    "declaration": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
     "importHelpers": true,
@@ -20,8 +19,11 @@
     "strict": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "demo-playground-cli-mount-db": ["./src/index.ts"]
+    }
   },
-  "include": ["**/*.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "vitest.config.ts"]
 } 

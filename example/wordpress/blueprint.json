@@ -1,0 +1,27 @@
+{
+  "steps": [
+    {  
+        "step": "runWpInstallationWizard",  
+        "options": {}  
+    },
+    {
+      "step": "installPlugin",
+      "pluginData": {
+        "resource": "wordpress.org/plugins",
+        "slug": "jwt-authentication-for-wp-rest-api"
+      }
+    },
+    {
+      "step": "defineWpConfigConsts",
+        "consts": {
+          "JWT_AUTH_SECRET_KEY": "your-top-secret-key",
+          "JWT_AUTH_CORS_ENABLE": true
+        }
+     } ,
+     {
+       "step": "writeFile",
+       "path": "/wordpress/wp-content/mu-plugins/rewrite.php",
+       "data": "<?php add_action( 'after_setup_theme', function() { global $wp_rewrite; $wp_rewrite->set_permalink_structure('/%postname%/'); $wp_rewrite->flush_rules(); } );"
+     }
+  ]
+}
